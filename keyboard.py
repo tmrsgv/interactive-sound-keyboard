@@ -1,6 +1,9 @@
-from msvcrt import getch
+#from msvcrt import getch # Only for Windows
+import curses
 from playsound import playsound
 import random
+
+cur = curses.initscr() # Initialize curses
 
 cow = ['./animals/cow.wav',
        './animals/cow2.wav',
@@ -47,7 +50,7 @@ chicken = ['./animals/chicken.wav',
            './animals/chicken8.wav']
 
 while True:
-    key = ord(getch())
+    key = ord(cur.getch())
     print(key)
     if (key == 99): #c
         playsound(random.choice(cow))
