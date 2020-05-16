@@ -1,9 +1,11 @@
 #from msvcrt import getch # Only for Windows
 import curses
-from playsound import playsound
+from playsound import playsound #Only works on Windows
+from pygame import mixer
 import random
 
 cur = curses.initscr() # Initialize curses
+mixer.init() # Initialize sound library
 
 cow = ['./animals/cow.wav',
        './animals/cow2.wav',
@@ -50,22 +52,31 @@ chicken = ['./animals/chicken.wav',
            './animals/chicken8.wav']
 
 while True:
-    key = ord(cur.getch())
+    key = cur.getkey() # Listen for keypresses - returns key character (char)
+    mixer.music.set_volume(0.7)
+    mixer.music.pause()
     print(key)
-    if (key == 99): #c
-        playsound(random.choice(cow))
+    
+    if (key == 'q'):
+        mixer.music.load(random.choice(cow))
+        mixer.music.play()
 
     if (key == 100):
-        playsound(random.choice(sheep))
+        mixer.music.load(random.choice(sheep))
+        mixer.music.play()
 
     if (key == 101):
-        playsound(random.choice(chicken))
+        mixer.music.load(random.choice(chicken))
+        mixer.music.play()
 
     if (key == 102):
-        playsound(random.choice(horse))
+        mixer.music.load(random.choice(horse))
+        mixer.music.play()
 
     if (key == 103):
-        playsound(random.choice(elephant))
+        mixer.music.load(random.choice(elephant))
+        mixer.music.play()
 
     if (key == 104):
-        playsound(random.choice(lion))
+        mixer.music.load(random.choice(lion))
+        mixer.music.play()
