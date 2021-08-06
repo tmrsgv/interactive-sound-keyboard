@@ -7,7 +7,9 @@ cow = ['./animals/cow.wav',
        './animals/cow6.wav']
 
 sheep = ['./animals/sheep.wav',
-       './animals/sheep2.wav',]
+       './animals/sheep2.wav',
+       './animals/sheep3.wav',
+       './animals/sheep4.wav',]
 
 horse = ['./animals/horse.wav',
        './animals/horse2.wav',
@@ -17,11 +19,13 @@ horse = ['./animals/horse.wav',
        './animals/horse6.wav']
 
 duck = ['./animals/duck.wav',
-       './animals/duck2.wav',
-       './animals/duck3.wav',
-       './animals/duck4.wav',
-       './animals/duck5.wav',
-       './animals/duck6.wav']
+       './animals/duck2.wav']
+
+pig = ['./animals/pig.wav',
+       './animals/pig2.wav',
+       './animals/pig3.wav',
+       './animals/pig4.wav',
+       './animals/pig5.wav']
 
 elephant = ['./animals/elephant.wav',
             './animals/elephant2.wav',
@@ -33,11 +37,32 @@ lion = ['./animals/lion.wav',
         './animals/lion4.wav',
         './animals/lion5.wav']
 
+monkey = ['./animals/monkey.wav']
+
+bear = ['./animals/bear.wav',
+        './animals/bear2.wav',
+        './animals/bear3.wav']
+
+hawk = ['./animals/hawk.wav',
+        './animals/hawk2.wav',
+        './animals/hawk3.wav']
+
+dolphin = ['./animals/dolphin.wav',
+           './animals/dolphin2.wav']
+
 chicken = ['./animals/chicken.wav',
            './animals/chicken2.wav',
            './animals/chicken3.wav',
-           './animals/chicken4.wav',
-           './animals/chicken5.wav',
-           './animals/chicken6.wav',
-           './animals/chicken7.wav',
-           './animals/chicken8.wav']
+           './animals/chicken4.wav']
+
+train = 
+
+race_car =
+
+car =
+
+tractor =
+
+plane =
+
+bycycle =

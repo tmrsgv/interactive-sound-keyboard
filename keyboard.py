@@ -8,19 +8,15 @@ import os
 import sys
 from gpiozero import LED, Button
 from time import sleep
+import time
 import rdm6300
-import soundPaths.py
-
+from soundPaths import *
 
 os.chdir(os.path.dirname(sys.argv[0]))
 print (os.getcwd())
-cur = curses.initscr() # Initialize curses
-curses.noecho()
-curses.cbreak()
-
-mixer.init() # Initialize sound library
-mixer.music.load('./songs/start.wav')
-mixer.music.play()
+# cur = curses.initscr() # Initialize curses
+# curses.noecho()
+# curses.cbreak()
 
 greenLed = LED(26)
 greenButton = Button(19,pull_up = True,bounce_time= None)
@@ -35,16 +31,23 @@ blueButton = Button(20,pull_up = True,bounce_time= None)
 yellowLed = LED(16)
 yellowButton = Button(12,pull_up = True,bounce_time= None)
 
-RFreader = rdm6300.Reader('/dev/ttyS0') #Initialize rfid card reader
+mixer.init() # Initialize sound library
+mixer.music.set_volume(1.0)
+mixer.music.load('./songs/start.wav')
+mixer.music.play()
+
+
+RFreader = rdm6300.Reader('/dev/ttyAMA0') #Initialize rfid card reader
+currentCard = 0
 cardSets = {
-7633229 :  [cow, sheep, chicken, horse, duck],
-7642883 : [lion, elephant, tiger, bear],
-1234567 : [train, plane, car, tractor, bike],
-7654321 : [piano, guitar, violin, trumpet, drum]}
+7646102 :  [cow, sheep, chicken, horse, duck, pig],
+7487262 : [lion, elephant, monkey, bear, hawk, dolphin]}
+# 1234567 : [train, plane, car, tractor, bike],
+# 7654321 : [piano, guitar, violin, trumpet, drum]}
 
 # LED Layout (list subscript in parenthesis)
 # ----------------------
-# | Green(1)     Red(2)|
+# | Green(0)     Red(1)|
 # | *                * |
 # |                    |
 # | *                * |
@@ -53,46 +56,127 @@ cardSets = {
 # |                    |
 # ----------------------
 
-while (mixer.music.get_busy() == True):
-    a=1
 
-while True:
-    try:
-        card = RFreader.read()
-        currentCard = card.value
-        print(f"[{card.value}]")
+def gamePlay(stdscr):
+    # Clear and refresh the screen for a blank canvas
+    bootupLED()
+    stdscr.clear()
+    stdscr.refresh()
+    currentCard = 0
+    tStartPower = time.process_time()
+    tStartRF = time.process_time()
+    mixer.init()
+    mixer.music.set_volume(1.0)
+    while True:
+        try:
+            tCurrentRF = time.process_time()
+            tCurrent = time.process_time()
 
-        mixer.music.set_volume(0.8)
-        mixer.music.stop()
+            if (tCurrent - tStartPower > 60):
+                print ("Shutting down...")
+                shutdown()
 
-        if greenButton.is_pressed:
-            soundAndColor('greenLed', cardSets[currentCard][0])
-        if yellowButton.is_pressed:
-            soundAndColor('yellowLed', cardSets[currentCard][1])
-        if whiteButton.is_pressed:
-            soundAndColor('whiteLed', cardSets[currentCard][2])
-        if white2Button.is_pressed:
-            soundAndColor('white2Led', cardSets[currentCard][3])
-        if blueButton.is_pressed:
-            soundAndColor('blueLed', cardSets[currentCard][4])
-        if redButton.is_pressed:
-            soundAndColor('redLed', cardSets[currentCard][5])
+            card = RFreader.read(timeout=None)
+            time.sleep(0.0001)
+            RFreader.stop()
+            if card is not None:
+                currentCard = card.value
+                # print(card.value)
+            else:
+                greenLed.on()
+                time.sleep(0.1)
+                greenLed.off()
+
+            if currentCard is not None:
+                if greenButton.is_pressed:
+                    tStartPower = time.process_time()
+                    soundAndColor(greenLed, cardSets[currentCard][0])
+                    print(cardSets[currentCard][0])
+                if yellowButton.is_pressed:
+                    tStartPower = time.process_time()
+                    soundAndColor(yellowLed, cardSets[currentCard][1])
+                    print(cardSets[currentCard][1])
+                if whiteButton.is_pressed:
+                    tStartPower = time.process_time()
+                    soundAndColor(whiteLed, cardSets[currentCard][2])
+                    print(cardSets[currentCard][2])
+                if white2Button.is_pressed:
+                    tStartPower = time.process_time()
+                    soundAndColor(white2Led, cardSets[currentCard][3])
+                    print(cardSets[currentCard][3])
+                if blueButton.is_pressed:
+                    tStartPower = time.process_time()
+                    soundAndColor(blueLed, cardSets[currentCard][4])
+                    print(cardSets[currentCard][4])
+                if redButton.is_pressed:
+                    tStartPower = time.process_time()
+                    soundAndColor(redLed, cardSets[currentCard][5])
+                    print(cardSets[currentCard][5])
 
 
-    except:
-        mixer.music.stop()
-        curses.echo()
-        curses.nocbreak()
-        curses.endwin()
-        pygame.display.quit()
-        pygame.quit()
+        except:
+            mixer.music.stop()
+            curses.echo()
+            curses.nocbreak()
+            curses.endwin()
+            pygame.display.quit()
+            pygame.quit()
 
 
 def soundAndColor(LEDcolor, soundPath):
-
     LEDcolor.on()
-    mixer.music.load(random.choice(soundPath))
+    print(LEDcolor)
+    trackToPlay = random.choice(soundPath)
+    mixer.music.load(trackToPlay)
+    print(trackToPlay)
     mixer.music.play()
     while (mixer.music.get_busy() == True):
         a=1
     LEDcolor.off()
+
+def shutdown():
+    mixer.music.load('./songs/off_sound.wav')
+    mixer.music.play()
+    while (mixer.music.get_busy() == True):
+        a=1
+    time.sleep(0.5)
+    mixer.music.stop()
+    curses.echo()
+    curses.nocbreak()
+    curses.endwin()
+    pygame.display.quit()
+    pygame.quit()
+    time.sleep(0.5)
+    os.system("sudo shutdown -h now")
+
+def bootupLED():
+    ledDelay = 0.55
+    greenLed.on()
+    time.sleep(ledDelay)
+    whiteLed.on()
+    time.sleep(ledDelay)
+    blueLed.on()
+    time.sleep(ledDelay)
+    redLed.on()
+    time.sleep(ledDelay)
+    white2Led.on()
+    time.sleep(ledDelay)
+    yellowLed.on()
+    time.sleep(ledDelay)
+    greenLed.off()
+    time.sleep(ledDelay)
+    whiteLed.off()
+    time.sleep(ledDelay)
+    blueLed.off()
+    time.sleep(ledDelay)
+    redLed.off()
+    time.sleep(ledDelay)
+    white2Led.off()
+    time.sleep(ledDelay)
+    yellowLed.off()
+
+def main():
+    curses.wrapper(gamePlay)
+
+if __name__ == "__main__":
+    main()
