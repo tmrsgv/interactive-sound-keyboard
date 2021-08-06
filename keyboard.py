@@ -1,82 +1,98 @@
 #from msvcrt import getch # Only for Windows
 import curses
-from playsound import playsound #Only works on Windows
+# from playsound import playsound #Only works on Windows
 from pygame import mixer
+import pygame
 import random
+import os
+import sys
+from gpiozero import LED, Button
+from time import sleep
+import rdm6300
+import soundPaths.py
 
+
+os.chdir(os.path.dirname(sys.argv[0]))
+print (os.getcwd())
 cur = curses.initscr() # Initialize curses
+curses.noecho()
+curses.cbreak()
+
 mixer.init() # Initialize sound library
+mixer.music.load('./songs/start.wav')
+mixer.music.play()
 
-cow = ['./animals/cow.wav',
-       './animals/cow2.wav',
-       './animals/cow3.wav',
-       './animals/cow4.wav',
-       './animals/cow5.wav',
-       './animals/cow6.wav']
+greenLed = LED(26)
+greenButton = Button(19,pull_up = True,bounce_time= None)
+whiteLed = LED(13)
+whiteButton = Button(6,pull_up = True,bounce_time= None)
+white2Led = LED(7)
+white2Button = Button(8,pull_up = True,bounce_time= None)
+redLed = LED(5)
+redButton = Button(11,pull_up = True,bounce_time= None)
+blueLed = LED(21)
+blueButton = Button(20,pull_up = True,bounce_time= None)
+yellowLed = LED(16)
+yellowButton = Button(12,pull_up = True,bounce_time= None)
 
-sheep = ['./animals/sheep.wav',
-       './animals/sheep2.wav',]
+RFreader = rdm6300.Reader('/dev/ttyS0') #Initialize rfid card reader
+cardSets = {
+7633229 :  [cow, sheep, chicken, horse, duck],
+7642883 : [lion, elephant, tiger, bear],
+1234567 : [train, plane, car, tractor, bike],
+7654321 : [piano, guitar, violin, trumpet, drum]}
 
-horse = ['./animals/horse.wav',
-       './animals/horse2.wav',
-       './animals/horse3.wav',
-       './animals/horse4.wav',
-       './animals/horse5.wav',
-       './animals/horse6.wav']
+# LED Layout (list subscript in parenthesis)
+# ----------------------
+# | Green(1)     Red(2)|
+# | *                * |
+# |                    |
+# | *                * |
+# |                    |
+# | *                * |
+# |                    |
+# ----------------------
 
-duck = ['./animals/duck.wav',
-       './animals/duck2.wav',
-       './animals/duck3.wav',
-       './animals/duck4.wav',
-       './animals/duck5.wav',
-       './animals/duck6.wav']
-
-elephant = ['./animals/elephant.wav',
-            './animals/elephant2.wav',
-            './animals/elephant3.wav']
-
-lion = ['./animals/lion.wav',
-        './animals/lion2.wav',
-        './animals/lion3.wav',
-        './animals/lion4.wav',
-        './animals/lion5.wav',
-        './animals/lion6.wav']
-
-chicken = ['./animals/chicken.wav',
-           './animals/chicken2.wav',
-           './animals/chicken3.wav',
-           './animals/chicken4.wav',
-           './animals/chicken5.wav',
-           './animals/chicken6.wav',
-           './animals/chicken7.wav',
-           './animals/chicken8.wav']
+while (mixer.music.get_busy() == True):
+    a=1
 
 while True:
-    key = cur.getkey() # Listen for keypresses - returns key character (char)
-    mixer.music.set_volume(0.7)
-    mixer.music.pause()
-    print(key)
-    
-    if (key == 'q'):
-        mixer.music.load(random.choice(cow))
-        mixer.music.play()
+    try:
+        card = RFreader.read()
+        currentCard = card.value
+        print(f"[{card.value}]")
 
-    if (key == 100):
-        mixer.music.load(random.choice(sheep))
-        mixer.music.play()
+        mixer.music.set_volume(0.8)
+        mixer.music.stop()
 
-    if (key == 101):
-        mixer.music.load(random.choice(chicken))
-        mixer.music.play()
+        if greenButton.is_pressed:
+            soundAndColor('greenLed', cardSets[currentCard][0])
+        if yellowButton.is_pressed:
+            soundAndColor('yellowLed', cardSets[currentCard][1])
+        if whiteButton.is_pressed:
+            soundAndColor('whiteLed', cardSets[currentCard][2])
+        if white2Button.is_pressed:
+            soundAndColor('white2Led', cardSets[currentCard][3])
+        if blueButton.is_pressed:
+            soundAndColor('blueLed', cardSets[currentCard][4])
+        if redButton.is_pressed:
+            soundAndColor('redLed', cardSets[currentCard][5])
 
-    if (key == 102):
-        mixer.music.load(random.choice(horse))
-        mixer.music.play()
 
-    if (key == 103):
-        mixer.music.load(random.choice(elephant))
-        mixer.music.play()
+    except:
+        mixer.music.stop()
+        curses.echo()
+        curses.nocbreak()
+        curses.endwin()
+        pygame.display.quit()
+        pygame.quit()
 
-    if (key == 104):
-        mixer.music.load(random.choice(lion))
-        mixer.music.play()
+
+def soundAndColor(LEDcolor, soundPath):
+
+    LEDcolor.on()
+    mixer.music.load(random.choice(soundPath))
+    mixer.music.play()
+    while (mixer.music.get_busy() == True):
+        a=1
+    LEDcolor.off()
