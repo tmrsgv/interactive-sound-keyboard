@@ -1,3 +1,4 @@
+# Animals
 
 cow = ['./animals/cow.wav',
        './animals/cow2.wav',
@@ -55,14 +56,59 @@ chicken = ['./animals/chicken.wav',
            './animals/chicken3.wav',
            './animals/chicken4.wav']
 
-train = 
+# transportation
 
-race_car =
+train = ['./transportation/train1.wav',
+         './transportation/train2.wav',
+         './transportation/train3.wav',
+         './transportation/train4.wav',
+         './transportation/train5.wav',
+         './transportation/train6.wav']
 
-car =
+race_car = ['./transportation/race_car1.wav',
+            './transportation/race_car2.wav',
+            './transportation/race_car3.wav',
+            './transportation/race_car4.wav']
 
-tractor =
+car = ['./transportation/car1.wav',
+       './transportation/car2.wav',
+       './transportation/car3.wav',
+       './transportation/car4.wav',
+       './transportation/car5.wav',
+       './transportation/car6.wav',
+       './transportation/car7.wav']
 
-plane =
+tractor = ['./transportation/tractor1.wav',
+           './transportation/tractor2.wav',
+           './transportation/tractor3.wav']
 
-bycycle =
+plane = ['./transportation/plane1.wav',
+         './transportation/plane2.wav',
+         './transportation/plane3.wav',
+         './transportation/plane4.wav',
+         './transportation/plane5.wav',
+         './transportation/plane6.wav']
+
+bicycle = ['./transportation/bicycle1.wav']
+
+# Musical Instruments
+
+piano = ['./musical_instruments/piano1.wav',
+         './musical_instruments/piano2.wav',
+         './musical_instruments/piano3.wav',
+         './musical_instruments/piano4.wav']
+
+guitar = ['./musical_instruments/guitar1.wav',
+          './musical_instruments/guitar2.wav',
+          './musical_instruments/guitar3.wav',
+          './musical_instruments/guitar4.wav']
+
+violin = ['./musical_instruments/violin1.wav']
+
+trumpet = ['./musical_instruments/trumpet1.wav',
+           './musical_instruments/trumpet2.wav',
+           './musical_instruments/trumpet3.wav']
+
+drum = ['./musical_instruments/drum1.wav',
+        './musical_instruments/drum2.wav',
+        './musical_instruments/drum3.wav']

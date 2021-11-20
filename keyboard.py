@@ -36,14 +36,16 @@ mixer.music.set_volume(1.0)
 mixer.music.load('./songs/start.wav')
 mixer.music.play()
 
+os.system("echo 0 | sudo tee /sys/class/leds/led1/brightness")
+os.system("echo 0 | sudo tee /sys/class/leds/led0/brightness")
 
 RFreader = rdm6300.Reader('/dev/ttyAMA0') #Initialize rfid card reader
 currentCard = 0
 cardSets = {
 7646102 :  [cow, sheep, chicken, horse, duck, pig],
-7487262 : [lion, elephant, monkey, bear, hawk, dolphin]}
-# 1234567 : [train, plane, car, tractor, bike],
-# 7654321 : [piano, guitar, violin, trumpet, drum]}
+9819485 : [lion, elephant, monkey, bear, hawk, dolphin],
+9811477 : [train, plane, car, tractor, bicycle, race_car],
+9787282 : [piano, guitar, violin, trumpet, drum]}
 
 # LED Layout (list subscript in parenthesis)
 # ----------------------
@@ -71,8 +73,7 @@ def gamePlay(stdscr):
         try:
             tCurrentRF = time.process_time()
             tCurrent = time.process_time()
-
-            if (tCurrent - tStartPower > 60):
+            if (tCurrent - tStartPower > 5):
                 print ("Shutting down...")
                 shutdown()
 
