@@ -5,6 +5,7 @@ A smart, interactive, python based, kids toy. A re-take on old-school "farm anim
 * [Description](#description)
 * [Installation](#installation)
 * [Usage](#usage)
+* [Non-SW](#Non-SW)
 * [Author](#author)
 * [License](#license)
 
@@ -23,10 +24,25 @@ Further features include:
 - having multiple sounds (of the same type) for each button, meaning there will be a random sound even if you press the same button twice
 
 ## Installation
-TBD
+No installation required, just put the project folder on a Raspberry Pi and run the 'keyboard.py'. It is recommended to create a deamon or service to run at Rpi boot.
 
 ## Usage
-TBD
+All of the framework is ready for operation. All is required is changing the RFID tags UID in the code to match your specific tags
+Changing of sound sets is done 'on the fly' when the device is ON and cards are swapped
+
+## Non-SW
+### HW Shopping List
+- A Raspberry Pi 2 and above would be optimal
+- computer speakers, with a built-in amp and 5V and 3.5mm inputs (can be connected directly to the Rpi)
+- 6 'arcade style' push buttons (with LEDs)
+- A Li-ion battery output 5V (can use a powerbank)
+- RFID tag reader
+- Some Jumper wires
+- A box to hold everything together
+
+### Further Info
+- Electrical diagrams TBD
+- Project photos TBD
 
 ## Author
 Myself, Tomer Segev
