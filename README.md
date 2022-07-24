@@ -5,7 +5,7 @@ A smart, interactive, python based, kids toy. A re-take on old-school "farm anim
 * [Description](#description)
 * [Installation](#installation)
 * [Usage](#usage)
-* [Non-SW](#Non-SW)
+* [Non-SW](#non-sw)
 * [Author](#author)
 * [License](#license)
 
@@ -31,18 +31,9 @@ All of the framework is ready for operation. All is required is changing the RFI
 Changing of sound sets is done 'on the fly' when the device is ON and cards are swapped
 
 ## Non-SW
-### HW Shopping List
-- A Raspberry Pi 2 and above would be optimal
-- computer speakers, with a built-in amp and 5V and 3.5mm inputs (can be connected directly to the Rpi)
-- 6 'arcade style' push buttons (with LEDs)
-- A Li-ion battery output 5V (can use a powerbank)
-- RFID tag reader
-- Some Jumper wires
-- A box to hold everything together
-
-### Further Info
-- Electrical diagrams TBD
-- Project photos TBD
+- Project page on Instructables - TBD
+- Electrical diagrams - TBD
+- Project photos - TBD
 
 ## Author
 Myself, Tomer Segev
